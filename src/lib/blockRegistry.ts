@@ -17,11 +17,13 @@ export type BlockPropsByType = {
   heading: HeadingProps;
 };
 
-export type Block<K extends BlockType = BlockType> = {
-  id?: string;
-  type: K;
-  props: BlockPropsByType[K];
-};
+export type Block = {
+  [K in BlockType]: {
+    id?: string;
+    type: K;
+    props: BlockPropsByType[K];
+  };
+}[BlockType];
 
 export type PageDefinition = {
   version: number;

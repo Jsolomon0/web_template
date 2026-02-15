@@ -26,15 +26,22 @@ export function BlockRenderer({ blocks }: BlockRendererProps) {
           return null;
         }
 
-        const Component = blockRegistry[block.type];
-        const blockId = (block as Block).id ?? (block as Block).props?.id;
+        const typedBlock = block as Block;
+        const blockId = typedBlock.id ?? typedBlock.props?.id;
+        const key = blockId ?? `${typedBlock.type}-${index}`;
 
-        return (
-          <Component
-            key={blockId ?? `${block.type}-${index}`}
-            {...(block as Block).props}
-          />
-        );
+        switch (typedBlock.type) {
+          case "hero":
+            return <blockRegistry.hero key={key} {...typedBlock.props} />;
+          case "services":
+            return <blockRegistry.services key={key} {...typedBlock.props} />;
+          case "cta":
+            return <blockRegistry.cta key={key} {...typedBlock.props} />;
+          case "heading":
+            return <blockRegistry.heading key={key} {...typedBlock.props} />;
+          default:
+            return null;
+        }
       })}
     </div>
   );

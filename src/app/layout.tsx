@@ -1,23 +1,10 @@
 import type { Metadata } from "next";
-import { Manrope, Playfair_Display } from "next/font/google";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { siteConfig } from "@/content/site.config";
 import { getNavigationItems, getPrimaryCta } from "@/lib/navigation";
 import { buildMetadata } from "@/lib/seo";
 import "./globals.css";
-
-const manrope = Manrope({
-  variable: "--font-sans",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const playfair = Playfair_Display({
-  variable: "--font-serif",
-  subsets: ["latin"],
-  display: "swap",
-});
 
 export const metadata: Metadata = buildMetadata();
 
@@ -26,15 +13,21 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const fontRegistry = {
-    manrope,
-    "playfair-display": playfair,
-  };
+  const fontStackRegistry = {
+    manrope: '"Segoe UI", "Helvetica Neue", Arial, sans-serif',
+    "playfair-display": 'Georgia, "Times New Roman", Times, serif',
+  } as const;
 
-  const sansFont = fontRegistry[siteConfig.branding.fonts.sans] ?? manrope;
-  const serifFont = fontRegistry[siteConfig.branding.fonts.serif] ?? playfair;
+  const sansFont =
+    fontStackRegistry[siteConfig.branding.fonts.sans] ??
+    fontStackRegistry.manrope;
+  const serifFont =
+    fontStackRegistry[siteConfig.branding.fonts.serif] ??
+    fontStackRegistry["playfair-display"];
 
   const brandStyle = {
+    "--font-sans": sansFont,
+    "--font-serif": serifFont,
     "--background": siteConfig.branding.colors.background,
     "--foreground": siteConfig.branding.colors.foreground,
     "--muted": siteConfig.branding.colors.muted,
@@ -56,10 +49,7 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body
-        className={`${sansFont.variable} ${serifFont.variable} antialiased`}
-        style={brandStyle}
-      >
+      <body className="antialiased" style={brandStyle}>
         {/* Skip link keeps keyboard users from tabbing through the full header. */}
         <a className="skip-link" href="#main">
           {siteConfig.ui.skipLinkLabel}
