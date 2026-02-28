@@ -24,7 +24,7 @@ function isAuthorized(request: NextRequest) {
   return user === ADMIN_USER && password === ADMIN_PASSWORD;
 }
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   if (!ADMIN_PASSWORD) {
     return new NextResponse(
       "ADMIN_PASSWORD is not set. Set it to enable the admin UI.",
