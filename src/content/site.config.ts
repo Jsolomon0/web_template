@@ -12,71 +12,6 @@ const secondaryCta = {
   intent: "secondary",
 };
 
-const heroContent = {
-  eyebrow: "Business website template",
-  title: "Clarity for growing teams",
-  description:
-    "Build a polished online presence with configurable sections, clear messaging, and reusable blocks.",
-  layout: "split",
-  highlights: [
-    {
-      label: "Typical kickoff",
-      value: "2 weeks",
-    },
-    {
-      label: "Project clarity",
-      value: "Clear milestones",
-    },
-  ],
-  background: {
-    type: "gradient",
-  },
-};
-
-const servicesContent = {
-  eyebrow: "Services",
-  title: "Services designed for momentum",
-  description:
-    "Organized offerings that translate into clear next steps and measurable outcomes.",
-  columns: 3,
-  items: [
-    {
-      title: "Discovery",
-      description:
-        "Align on goals, constraints, and success criteria before execution.",
-      icon: { glyph: "1", label: "Step one" },
-    },
-    {
-      title: "Planning",
-      description:
-        "Create a focused roadmap with priorities, timelines, and owners.",
-      icon: { glyph: "2", label: "Step two" },
-    },
-    {
-      title: "Delivery",
-      description:
-        "Execute with consistent communication and measurable checkpoints.",
-      icon: { glyph: "3", label: "Step three" },
-    },
-  ],
-};
-
-const primaryCtaContent = {
-  eyebrow: "Call to action",
-  headline: "Ready for a guided kickoff?",
-  supportingText:
-    "Choose a starting point and we will tailor a plan around your goals.",
-  intent: "primary",
-};
-
-const secondaryCtaContent = {
-  eyebrow: "Next steps",
-  headline: "Let us map your next milestone",
-  supportingText:
-    "Share a brief summary and we will follow up within one business day.",
-  intent: "secondary",
-};
-
 const rawSiteConfig = {
   business: {
     name: "Northwind Studio",
@@ -181,53 +116,6 @@ const rawSiteConfig = {
       "A flexible business website template built for clarity, trust, and measurable outcomes.",
     openGraph: {
       type: "website",
-    },
-  },
-  pages: {
-    home: {
-      seo: {
-        title: "Clarity for growing teams",
-        description:
-          "A reusable business website template with configurable blocks, conversion-focused CTAs, and a clean brand system.",
-      },
-      blocks: [
-        {
-          type: "hero",
-          props: {
-            id: "top",
-            ...heroContent,
-            primaryCta,
-            secondaryCta,
-          },
-        },
-        {
-          type: "services",
-          props: {
-            id: "services",
-            eyebrow: servicesContent.eyebrow,
-            title: servicesContent.title,
-            description: servicesContent.description,
-            columns: servicesContent.columns,
-            services: servicesContent.items,
-          },
-        },
-        {
-          type: "cta",
-          props: {
-            id: "process",
-            ...primaryCtaContent,
-            cta: primaryCta,
-          },
-        },
-        {
-          type: "cta",
-          props: {
-            id: "contact",
-            ...secondaryCtaContent,
-            cta: secondaryCta,
-          },
-        },
-      ],
     },
   },
 };

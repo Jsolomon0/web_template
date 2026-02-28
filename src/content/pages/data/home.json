@@ -1,0 +1,109 @@
+{
+  "version": 1,
+  "id": "home",
+  "seo": {
+    "title": "Clarity for growing teams",
+    "description": "A reusable business website template with configurable blocks, conversion-focused CTAs, and a clean brand system."
+  },
+  "blocks": [
+    {
+      "type": "hero",
+      "props": {
+        "id": "top",
+        "layout": "split",
+        "eyebrow": "Business website template",
+        "title": "Clarity for growing teams",
+        "description": "Build a polished online presence with configurable sections, clear messaging, and reusable blocks.",
+        "primaryCta": {
+          "label": "Schedule a call",
+          "href": "#contact",
+          "intent": "primary"
+        },
+        "secondaryCta": {
+          "label": "Send a message",
+          "href": "mailto:hello@northwind.studio",
+          "intent": "secondary"
+        },
+        "background": {
+          "type": "gradient"
+        },
+        "highlights": [
+          {
+            "label": "Typical kickoff",
+            "value": "2 weeks"
+          },
+          {
+            "label": "Project clarity",
+            "value": "Clear milestones"
+          }
+        ]
+      }
+    },
+    {
+      "type": "services",
+      "props": {
+        "id": "services",
+        "eyebrow": "Services",
+        "title": "Services designed for momentum",
+        "description": "Organized offerings that translate into clear next steps and measurable outcomes.",
+        "columns": 3,
+        "services": [
+          {
+            "title": "Discovery",
+            "description": "Align on goals, constraints, and success criteria before execution.",
+            "icon": {
+              "glyph": "1",
+              "label": "Step one"
+            }
+          },
+          {
+            "title": "Planning",
+            "description": "Create a focused roadmap with priorities, timelines, and owners.",
+            "icon": {
+              "glyph": "2",
+              "label": "Step two"
+            }
+          },
+          {
+            "title": "Delivery",
+            "description": "Execute with consistent communication and measurable checkpoints.",
+            "icon": {
+              "glyph": "3",
+              "label": "Step three"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "cta",
+      "props": {
+        "id": "process",
+        "eyebrow": "Call to action",
+        "headline": "Ready for a guided kickoff?",
+        "supportingText": "Choose a starting point and we will tailor a plan around your goals.",
+        "intent": "primary",
+        "cta": {
+          "label": "Schedule a call",
+          "href": "#contact",
+          "intent": "primary"
+        }
+      }
+    },
+    {
+      "type": "cta",
+      "props": {
+        "id": "contact",
+        "eyebrow": "Next steps",
+        "headline": "Let us map your next milestone",
+        "supportingText": "Share a brief summary and we will follow up within one business day.",
+        "intent": "secondary",
+        "cta": {
+          "label": "Send a message",
+          "href": "mailto:hello@northwind.studio",
+          "intent": "secondary"
+        }
+      }
+    }
+  ]
+}

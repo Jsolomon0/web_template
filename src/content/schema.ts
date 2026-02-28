@@ -84,37 +84,70 @@ export const blockSchema = z.discriminatedUnion("type", [
   z.object({ type: z.literal("heading"), props: headingSchema }),
 ]);
 
-export const pageSchema = z
+export const pageSeoSchema = z
   .object({
-    version: z.literal(CONTENT_SCHEMA_VERSION),
-    id: z.string().min(1),
-    blocks: z.array(blockSchema),
+    title: z.string().optional(),
+    description: z.string().optional(),
+    openGraph: z
+      .object({
+        title: z.string().optional(),
+        description: z.string().optional(),
+        type: z.enum(["website", "article"]).optional(),
+        url: z.string().optional(),
+      })
+      .optional(),
   })
-  .superRefine((page, ctx) => {
-    const heroCount = page.blocks.filter((block) => block.type === "hero").length;
-    const headingH1Count = page.blocks.filter(
-      (block) => block.type === "heading" && block.props.level === 1,
-    ).length;
-    const totalH1 = heroCount + headingH1Count;
+  .optional();
 
-    if (totalH1 !== 1) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message:
-          "Pages must include exactly one h1. Provide a hero block or a heading block with level 1.",
-        path: ["blocks"],
-      });
-    }
+export const pageIdSchema = z.string().regex(/^[a-z0-9-]+$/);
 
-    if (heroCount === 0 && headingH1Count === 0) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message:
-          "Pages must include either a hero block or an explicit heading block with level 1.",
-        path: ["blocks"],
-      });
-    }
-  });
+const pageBaseObject = z.object({
+  version: z.literal(CONTENT_SCHEMA_VERSION),
+  id: pageIdSchema,
+  blocks: z.array(blockSchema),
+});
+
+function validatePageStructure(
+  page: z.infer<typeof pageBaseObject>,
+  ctx: z.RefinementCtx,
+) {
+  const heroCount = page.blocks.filter((block) => block.type === "hero").length;
+  const headingH1Count = page.blocks.filter(
+    (block) => block.type === "heading" && block.props.level === 1,
+  ).length;
+  const totalH1 = heroCount + headingH1Count;
+
+  if (totalH1 !== 1) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message:
+        "Pages must include exactly one h1. Provide a hero block or a heading block with level 1.",
+      path: ["blocks"],
+    });
+  }
+
+  if (heroCount === 0 && headingH1Count === 0) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message:
+        "Pages must include either a hero block or an explicit heading block with level 1.",
+      path: ["blocks"],
+    });
+  }
+}
+
+export const pageSchema = pageBaseObject.superRefine(validatePageStructure);
+
+export const pageFileSchema = pageBaseObject
+  .extend({
+    seo: pageSeoSchema,
+  })
+  .superRefine(validatePageStructure);
+
+export const manifestSchema = z.object({
+  version: z.literal(CONTENT_SCHEMA_VERSION),
+  homePageId: pageIdSchema,
+});
 
 export const siteConfigSchema = z.object({
   business: z.object({
@@ -238,26 +271,17 @@ export const siteConfigSchema = z.object({
       })
       .optional(),
   }),
-  pages: z.object({
-    home: z.object({
-      seo: z
-        .object({
-          title: z.string().optional(),
-          description: z.string().optional(),
-          openGraph: z
-            .object({
-              title: z.string().optional(),
-              description: z.string().optional(),
-              type: z.enum(["website", "article"]).optional(),
-              url: z.string().optional(),
-            })
-            .optional(),
-        })
-        .optional(),
-      blocks: z.array(blockSchema),
-    }),
-  }),
-});
+})
+  .superRefine((config, ctx) => {
+    const industryKey = config.business.industry;
+    if (config.industries[industryKey] === undefined) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: `Unknown industry key: ${industryKey}`,
+        path: ["business", "industry"],
+      });
+    }
+  });
 
 export type SiteConfig = z.infer<typeof siteConfigSchema>;
 export type PageDefinition = z.infer<typeof pageSchema>;

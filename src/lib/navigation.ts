@@ -81,27 +81,17 @@ export function resolveCtaLink(
 }
 
 export function getNavigationItems(config: SiteConfig) {
-  const enabledAnchors = getEnabledAnchors(
-    config.pages.home.blocks,
-    config.featureFlags,
-  );
-
-  return config.navigation.filter((item) => {
-    if (!isHashLink(item.href)) {
-      return true;
-    }
-    return enabledAnchors.has(item.href);
-  });
+  return config.navigation;
 }
 
 export function getPrimaryCta(
   config: SiteConfig,
-  blocks: BlockDefinition[] = config.pages.home.blocks,
+  blocks?: BlockDefinition[],
 ) {
   const primary = config.ctas.primary;
   const secondary = config.ctas.secondary;
 
-  if (!isHashLink(primary.href)) {
+  if (!blocks || !isHashLink(primary.href)) {
     return primary;
   }
 
